@@ -16,16 +16,36 @@ Other apcupsd images i've seen are for exporting monitoring data to grafana or p
 
 Very little configuration is currently required for this image to work, though you may be required to tweak the USB device that is passed through to your container by docker.
 
-<code>
-docker run -it —privileged \<br>
-  --name=apcupsd \<br>
-  -e TZ=Europe/London \<br>
-  --device=/dev/usb/<b>hiddev1</b> \<br>
-  --restart unless-stopped \<br>
-  -p=3551:3551 \<br>
-  -v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket \<br>
+```
+docker run -it —privileged \
+  --name=apcupsd \
+  -e TZ=Europe/London \
+  --device=/dev/usb/hiddev1 \
+  --restart unless-stopped \
+  -p=3551:3551 \
+  -v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket \
   gregewing/apcupsd:latest
-</code>
+```
+
+And, for those using tools with docker-compose, here's an example. If you create the directory you want to bind to /etc/apcupsd in advance, and populate it with an apcupsd.conf file, then apcupsd should be functional the first time you launch the container:
+
+```yml
+version: '3.7'
+services:
+  apcupsd:
+    image: gregewing/apcupsd:latest
+    container_name: apcupsd
+    devices:
+      - /dev/usb/hiddev0
+    ports:
+      - 3551:3551
+    environment:
+      - TZ=US/Mountain
+    volumes:
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+      - /data/apcupsd:/etc/apcupsd
+    restart: unless-stopped
+```
 <br>
 
 You will likely want to customise <code>/etc/apcupsd/apcupsd.conf</code> for each of the hosts that you run this container on, so it will need to be bind mounded for persistence purpoes.  I recommend setting the threshold for shutting down hosts not directly connected to the UPS a little higher than the host connected to the UPS, so that the remote hosts are able to shut down before the UPS Connected host is no longer available to provide signalling.
