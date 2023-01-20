@@ -16,7 +16,7 @@ Other apcupsd images i've seen are for exporting monitoring data to grafana or p
 
 Very little configuration is currently required for this image to work, though you may be required to tweak the USB device that is passed through to your container by docker.
 
-```
+```console
 docker run -it —privileged \
   --name=apcupsd \
   -e TZ=Europe/London \
