@@ -27,8 +27,7 @@ docker run -it —privileged \
   gregewing/apcupsd:latest
 ```
 
-And, for those using tools with docker-compose, here's an example. If you create the directory you want to bind to /etc/apcupsd in advance, and populate it with an apcupsd.conf file, then apcupsd should be functional the first time you launch the container:
-
+And, for those using tools with docker-compose (like Portainer), here's an example compose:
 ```yml
 version: '3.7'
 services:
@@ -39,14 +38,20 @@ services:
       - /dev/usb/hiddev0
     ports:
       - 3551:3551
-    environment:
-      - TZ=US/Mountain
+    environment: # Delete or comment out any environment variables you don't wish to change
+      - UPSNAME=${UPSNAME} # This value will display in apcupsd-cgi details.
+      - UPSCABLE=${UPSCABLE} # Default value is usb
+      - UPSTYPE=${UPSTYPE} # Default value is usb
+      - DEVICE=${DEVICE} # Default value is <blank>
+      - NETSERVER=${NETSERVER} # Default value is on
+      - NISIP=${NISIP} # Default value is 0.0.0.0
+      - TZ=${TZ} # Default value is Europe/London
     volumes:
       - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
       - /data/apcupsd:/etc/apcupsd
     restart: unless-stopped
 ```
-<br>
+Environment variables can be hardcoded into the above docker-compose, or added in the environment section of tool like Portainer. 
 
 You will likely want to customise <code>/etc/apcupsd/apcupsd.conf</code> for each of the hosts that you run this container on, so it will need to be bind mounded for persistence purpoes.  I recommend setting the threshold for shutting down hosts not directly connected to the UPS a little higher than the host connected to the UPS, so that the remote hosts are able to shut down before the UPS Connected host is no longer available to provide signalling.
 
