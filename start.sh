@@ -5,16 +5,26 @@
 
 # Check if apcupsd.conf already exists
 if [ ! -f /etc/apcupsd/apcupsd.conf ]; then
-  mv /usr/local/bin/apcupsd          /etc/default/apcupsd \
-  && mv /usr/local/bin/apcupsd.conf /etc/apcupsd/apcupsd.conf \
-  && mv /usr/local/bin/hosts.conf   /etc/apcupsd/hosts.conf \
-  && mv /usr/local/bin/doshutdown   /etc/apcupsd/doshutdown
+  mv /usr/local/bin/apcupsd /etc/default/apcupsd \
+  && mv /usr/local/bin/apcupsd.conf /etc/apcupsd/apcupsd.conf 
 else
-  mv /usr/local/bin/apcupsd          /etc/default/apcupsd \
-  && mv /usr/local/bin/hosts.conf   /etc/apcupsd/hosts.conf \
-  && mv /usr/local/bin/doshutdown   /etc/apcupsd/doshutdown
+  mv /usr/local/bin/apcupsd /etc/default/apcupsd \
+  && rm /usr/local/bin/apcupsd.conf
 fi
 
+# Check if hosts.conf already exists
+if [ ! -f /etc/apcupsd/hosts.conf ]; then
+  mv /usr/local/bin/hosts.conf /etc/default/hosts.conf
+else
+  rm /usr/local/bin/hosts.conf
+fi
+
+# Check if doshutdown already exists
+if [ ! -f /etc/apcupsd/doshutdown ]; then
+  mv /usr/local/bin/doshutdown /etc/default/doshutdown
+else
+  rm /usr/local/bin/doshutdown
+fi
 # Check if UPSNAME environment variable is set, and if so update apcupsd.conf
 if [ ! -z $UPSNAME ]; then
   sed -i 's|^UPSNAME.*|UPSNAME '"$UPSNAME"'|' /etc/apcupsd/apcupsd.conf
