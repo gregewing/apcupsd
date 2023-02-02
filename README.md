@@ -27,13 +27,13 @@ docker volume create apcupsd_config
 Then create the container with the following command.
 
 ```
-docker run -d --privileged \ 
-  --name=apcupsd  \ 
-  -e TZ=Europe/London \ 
-  --device=/dev/usb/<b>hiddev1</b> \ 
-  --restart unless-stopped \ 
-  -p=3551:3551 \ 
-  -v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket \ 
+docker run -d --privileged \
+  --name=apcupsd  \
+  -e TZ=Europe/London \
+  --device=/dev/usb/hiddev1 \
+  --restart unless-stopped \
+  -p=3551:3551 \
+  -v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket \
   -v apcupsd_config:/etc/apcupsd
   gregewing/apcupsd:latest
 ```
