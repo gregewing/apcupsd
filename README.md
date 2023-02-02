@@ -16,9 +16,9 @@ Other apcupsd images i've seen are for exporting monitoring data to grafana or p
 
 Very little configuration is currently required for this image to work, though you may be required to tweak the USB device that is passed through to your container by docker.
 
-It is recommended to create a <code>volume</code> before creating the container, this will allow for your configuration files to persist rebuilds and updates of teh container.  This can be done as follows from the command line, or via Portainer etc.
+It is recommended to create a <code>volume</code> before creating the container, this will allow for your configuration files to persist rebuilds and updates of teh container.  This can be done as follows from the command line, or via Portainer etc.   
 
-
+You can leave the volume empty, the container will fill put default versions of the configuration files and scripts for apcupsd when the container is created.  These will not be overwritten if the container is removed and recreated, so if you want to make any customisations, make them here. You can customise them either from from within the container, or from the host.  Restart or redeploy the container to apply any changed settings.
 
 ```
 docker volume create apcupsd_config
@@ -38,7 +38,7 @@ docker run -d --privileged \
   gregewing/apcupsd:latest
 ```
 
-And, for those using tools with docker-compose, here's an example. If you create the directory you want to bind to /etc/apcupsd in advance, and populate it with an apcupsd.conf file, then apcupsd should be functional the first time you launch the container:
+And, for those using tools with docker-compose, here's an example:
 
 ```yml
 version: '3.7'
@@ -54,12 +54,12 @@ services:
       - TZ=US/Mountain
     volumes:
       - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-      - /data/apcupsd:/etc/apcupsd
+      - apcupsd_config:/etc/apcupsd
     restart: unless-stopped
 ```
 <br>
 
-You will likely want to customise <code>/etc/apcupsd/apcupsd.conf</code> for each of the hosts that you run this container on, so it will need to be bind mounded for persistence purpoes.  I recommend setting the threshold for shutting down hosts not directly connected to the UPS a little higher than the host connected to the UPS, so that the remote hosts are able to shut down before the UPS Connected host is no longer available to provide signalling.
+As I mentioned above, you will likely want to customise <code>/etc/apcupsd/apcupsd.conf</code> for each of the hosts that you run this container on, so it will need to be bind mounded for persistence purpoes.  I recommend setting the threshold for shutting down hosts not directly connected to the UPS a little higher than the host connected to the UPS, so that the remote hosts are able to shut down before the UPS Connected host is no longer available to provide signalling.
 
 <b>Notes</b><br>
 <ul type="disc">
