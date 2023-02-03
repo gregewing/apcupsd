@@ -47,14 +47,14 @@ services:
     image: gregewing/apcupsd:latest
     container_name: apcupsd
     devices:
-      - /dev/usb/hiddev0
+      - /dev/usb/hiddev0 # This device needs to match what the APC UPS on your system uses.
     ports:
       - 3551:3551
     environment:
-      - TZ=US/Mountain
+      - TZ=${TZ}
     volumes:
       - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-      - apcupsd_config:/etc/apcupsd
+      - config:/etc/apcupsd
     restart: unless-stopped
 ```
 <br>
