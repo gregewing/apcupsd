@@ -56,6 +56,8 @@ services:
       - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
       - config:/etc/apcupsd
     restart: unless-stopped
+volumes:
+  config:
 ```
 <br>
 
