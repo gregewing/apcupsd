@@ -16,7 +16,7 @@ fi
 
 # Check if hosts.conf already exists
 if [ ! -f /etc/apcupsd/hosts.conf ]; then
-  mv /usr/local/bin/hosts.conf /etc/default/hosts.conf \
+  mv /usr/local/bin/hosts.conf /etc/apcupsd/hosts.conf \
   && echo "No existing hosts.conf found"
 else
   rm /usr/local/bin/hosts.conf \
@@ -25,7 +25,7 @@ fi
 
 # Check if doshutdown already exists
 if [ ! -f /etc/apcupsd/doshutdown ]; then
-  mv /usr/local/bin/doshutdown /etc/default/doshutdown \
+  mv /usr/local/bin/doshutdown /etc/apcupsd/doshutdown \
   && echo "No existing doshutdown found"
 else
   rm /usr/local/bin/doshutdown \
