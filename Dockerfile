@@ -1,7 +1,6 @@
 FROM ubuntu:latest
 MAINTAINER Greg Ewing (https://github.com/gregewing)
-ENV LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive
-ENV TZ=Europe/London
+ENV LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive TZ= UPSNAME= UPCABLE= UPSTYPE= DEVICE= POLLTIME= ONBATTERYDELAY= BATTERYLEVEL= MINUTES= TIMEOUT= SELFTEST= APCUPSD_SLAVES=
 
 COPY scripts /usr/local/bin
 
