@@ -34,7 +34,7 @@ docker run -d --privileged \
   --restart unless-stopped \
   -p=3551:3551 \
   -v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket \
-  -v apcupsd_config:/etc/apcupsd
+  -v apcupsd_config:/etc/apcupsd \
   gregewing/apcupsd:latest
 ```
 
